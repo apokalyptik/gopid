@@ -1,3 +1,12 @@
+// Package pid provides an easy, reusable, library for locking and creating a
+// pidfile common to *nix style servives.
+//
+//		import "github.com/apokalyptik/gopid"
+//		var pidFile = "/var/run/my.pid"
+//		_, err := pid.Do(pidFile)
+//		if err != nil {
+//			log.Fatalf("error creating pidfile: %s", err.Error())
+//		}
 package pid
 
 import (
@@ -6,6 +15,9 @@ import (
 	"syscall"
 )
 
+// Do does what you want: it creates (or opens) a pidfile, exclusively locks it
+// and writes the current executing programs PID to it.  It returns the file
+// descriptor and an error.
 func Do(filename string, permissions ...uint32) (*os.File, error) {
 	if len(permissions) == 0 {
 		permissions = []uint32{0666}
